@@ -28,6 +28,11 @@ const ChatGPTApp = () => {
     }
   };
 
+  useEffect(() => {
+    console.log('clearing chat');
+    clearChat();
+  },[])
+
   const startRecording = async () => {
     console.log('recording started');
     try {
@@ -168,19 +173,19 @@ const ChatGPTApp = () => {
           console.log(`${key}:`, value); // This should now show the blob object and not [object Object]
       }
 
-       const response = await axios.post('http://127.0.0.1:8000/send-audio', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/send-audio', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+               'Content-Type': 'multipart/form-data',
+            },
       });
       if (response.status == 200) {
         console.log(response.data.message);
-        const newUserMessage = { text: response.data.question, sender: 'user' }
-        setMessages(currentMessages => [...currentMessages, newUserMessage]);
-        setInputText('');
-        const thingToSay = '1';
-        Speech.speak(response.data.message);
-        typeChatGPTResponse(response.data.message);
+      const newUserMessage = { text: response.data.question, sender: 'user' }
+      setMessages(currentMessages => [...currentMessages, newUserMessage]);
+      setInputText('');
+      const thingToSay = '1';
+      Speech.speak(response.data.message);
+      typeChatGPTResponse(response.data.message);
       }
       setIsLoading(false);
     } catch (error) {
